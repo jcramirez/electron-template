@@ -2,31 +2,129 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-const serialport = require('serialport')
-const createTable = require('data-table')
+const Serialport = require('serialport')
+let ser = null
+let tmpScroll = 0
+let scrollDown = true
 
-serialport.list((err, ports) => {
-  console.log('ports', ports);
+Serialport.list((err, ports) => {
   if (err) {
-    document.getElementById('error').textContent = err.message
     return
   } else {
-    document.getElementById('error').textContent = ''
+    vueApp.ports = ports
   }
 
   if (ports.length === 0) {
-    document.getElementById('error').textContent = 'No ports discovered'
+    vueApp.selectedPort = 'No ports discovered'
   }
+})
 
-  const headers = Object.keys(ports[0])
-  const table = createTable(headers)
-  let tableHTML = ''
-  table.on('data', (data) => {
-    tableHTML += data
+let vueApp = new Vue({
+  el: '#app',
+  data: {
+    selectedPort: 'select port',
+    baudrate: 38400,
+    ports: [],
+    message: '',
+    portStatus: {
+      msg: 'Open',
+      status: false
+    }
+  },
+  methods: {
+    selectPort: function (e) {
+      this.selectedPort = e.target.innerHTML
+    },
+
+    openSelectedPort: function (e) {
+
+      if (vueApp.portStatus.status) {
+        // change open button to close
+        vueApp.portStatus.msg = 'Open'
+        vueApp.portStatus.status = false
+        closeSerial(ser)
+        .then(() => {
+          vueApp.updateData(`${vueApp.selectedPort} closed\n`)
+          vueApp.selectedPort = 'select port'
+          ser = null
+        })
+        return
+      }
+
+      closeSerial(ser)
+        .then(() => {
+          // change open button to close
+          vueApp.portStatus.msg = 'Close'
+          vueApp.portStatus.status = true
+
+          let Serial = require('serialport')
+
+          console.log(`port: ${vueApp.selectedPort}`)
+          ser = new Serial(vueApp.selectedPort, {
+            baudRate: vueApp.baudrate,
+            parser: Serial.parsers.readline('\n')
+          })
+
+          ser.on('open', () => {
+            vueApp.updateData(`${vueApp.selectedPort} open now!\n`)
+          })
+
+          ser.on('data', function (data) {
+            // console.log(data) // debug
+            vueApp.updateData(data)
+          })
+        })
+    },
+
+    updateData: function (data) {
+      document.getElementById('serialData').value += data
+      var textarea = document.getElementById('serialData')
+      // if detected scrolling up
+      tmpScroll = textarea.scrollTop
+      if (scrollDown) {
+        textarea.scrollTop = textarea.scrollHeight
+      }
+    }
+
+  }
+})
+
+/**
+ * [closeSerial description]
+ * @param  {[type]} port [description]
+ * @return {[type]}      [description]
+ */
+const closeSerial = (port) => {
+  return new Promise((resolve, reject) => {
+    if (port === null) {
+      resolve()
+    } else {
+      port.close((err) => {
+        if (err) {
+          console.log(`\nserial error: ${err}`)
+        }
+        console.log(`\nserial port closed`)
+        resolve()
+      })
+    }
   })
-  table.on('end', () => {
-    document.getElementById('ports').innerHTML = tableHTML
+}
+
+jQuery(($) => {
+  $('#serialData').scroll(function () {
+    // console.log(`scrolTop: ${$(this).scrollTop()} and tmp: ${tmpScroll}`)
+    if ($(this).scrollTop() < tmpScroll) {
+      // console.log('going up')
+      scrollDown = false
+    } else {
+      // console.log('going down')
+      // detect when scrolled all the way to the bottom
+      if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        // alert("You scrolled to the bottom!")
+        scrollDown = true
+        // console.log('scroll bottom')
+      }
+    }
+    tmpScroll = $(this).scrollTop()
   })
-  ports.forEach(port => table.write(port))
-  table.end()
 })
