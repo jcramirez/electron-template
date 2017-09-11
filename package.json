@@ -22,11 +22,11 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.4.1",
-    "electron-rebuild": "^1.4.0"
+    "electron-rebuild": "^1.4.0",
+    "standard": "*"
   },
   "dependencies": {
     "data-table": "^2.0.0",
-    "serialport": "^4.0.7",
-    "semistandard": "*"
+    "serialport": "^4.0.7"
   }
 }
