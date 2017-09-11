@@ -1,7 +1,7 @@
 {
   "name": "electron-serialport",
   "version": "1.0.1",
-  "description": "A minimal Electron application with node serialport",
+  "description": "A minimal Electron application serial monitor",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -18,7 +18,7 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "jcramirez",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.4.1",
@@ -26,6 +26,7 @@
     "standard": "*"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "data-table": "^2.0.0",
     "serialport": "^4.0.7"
   }
