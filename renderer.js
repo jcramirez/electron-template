@@ -97,6 +97,7 @@ let vueApp = new Vue({
   }
 })
 
+// rezie the textArea here so that it looks food right away
 resizeTextarea()
 
 /**
@@ -139,11 +140,17 @@ jQuery(($) => {
   })
 })
 
+/**
+ *
+ */
 window.addEventListener('resize', function (e) {
   e.preventDefault()
   resizeTextarea()
 })
 
+/**
+ *
+ */
 function resizeTextarea () {
   const {BrowserWindow} = require('electron').remote
   let currentWin = BrowserWindow.getFocusedWindow()
