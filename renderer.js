@@ -39,6 +39,7 @@ let vueApp = new Vue({
     },
 
     openSelectedPort: function (e) {
+      // if we are closing the port that was open
       if (vueApp.portStatus.status) {
         // change open button to close
         vueApp.portStatus.msg = 'Open'
@@ -53,6 +54,8 @@ let vueApp = new Vue({
         return
       }
 
+      // before opening a new port
+      // make sure that there is no existing port open
       closeSerial(ser)
         .then(() => {
           // change open button to close
@@ -98,7 +101,7 @@ let vueApp = new Vue({
   }
 })
 
-// rezie the textArea here so that it looks food right away
+// rezie the textArea here so that it looks good right away
 resizeTextarea()
 
 /**
@@ -123,6 +126,7 @@ const closeSerial = (port) => {
 }
 
 jQuery(($) => {
+  // used to deal with the scroll function
   $('#serialData').scroll(function () {
     // console.log(`scrolTop: ${$(this).scrollTop()} and tmp: ${tmpScroll}`)
     if ($(this).scrollTop() < tmpScroll) {
@@ -142,7 +146,8 @@ jQuery(($) => {
 })
 
 /**
- *
+ * listens for window size changes
+ * Used for changing size of textarea for serial monitor
  */
 window.addEventListener('resize', function (e) {
   e.preventDefault()
@@ -153,9 +158,11 @@ window.addEventListener('resize', function (e) {
  *
  */
 function resizeTextarea () {
+  let offset = 200 // px
   const {BrowserWindow} = require('electron').remote
   let currentWin = BrowserWindow.getFocusedWindow()
   let size = currentWin.getSize()
-  vueApp.textHeight = size[1] - 200
-  // console.log(`size: ${vueApp.textHeight}`)
+  let height = size[1]
+  vueApp.textHeight = height - offset
+  // console.log(`size: ${vueApp.textHeight}`) // debug
 }
