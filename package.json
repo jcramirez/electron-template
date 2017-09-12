@@ -26,8 +26,6 @@
     "standard": "*"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "data-table": "^2.0.0",
     "serialport": "^4.0.7"
   }
 }
