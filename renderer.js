@@ -22,10 +22,12 @@ Serialport.list((err, ports) => {
 let vueApp = new Vue({
   el: '#app',
   data: {
+    isOpen: false,
     selectedPort: 'select port',
     baudrate: 38400,
     ports: [],
     message: '',
+    textHeight: 200,
     portStatus: {
       msg: 'Open',
       status: false
@@ -37,7 +39,6 @@ let vueApp = new Vue({
     },
 
     openSelectedPort: function (e) {
-
       if (vueApp.portStatus.status) {
         // change open button to close
         vueApp.portStatus.msg = 'Open'
@@ -47,6 +48,7 @@ let vueApp = new Vue({
           vueApp.updateData(`${vueApp.selectedPort} closed\n`)
           vueApp.selectedPort = 'select port'
           ser = null
+          vueApp.isOpen = false
         })
         return
       }
@@ -56,6 +58,7 @@ let vueApp = new Vue({
           // change open button to close
           vueApp.portStatus.msg = 'Close'
           vueApp.portStatus.status = true
+          vueApp.isOpen = true
 
           let Serial = require('serialport')
 
@@ -77,17 +80,24 @@ let vueApp = new Vue({
     },
 
     updateData: function (data) {
-      document.getElementById('serialData').value += data
-      var textarea = document.getElementById('serialData')
+      let textarea = document.getElementById('serialData')
+      textarea.value += data
       // if detected scrolling up
       tmpScroll = textarea.scrollTop
       if (scrollDown) {
         textarea.scrollTop = textarea.scrollHeight
       }
+    },
+
+    clearScreen: function () {
+      let textarea = document.getElementById('serialData')
+      textarea.value = ''
     }
 
   }
 })
+
+resizeTextarea()
 
 /**
  * [closeSerial description]
@@ -128,3 +138,16 @@ jQuery(($) => {
     tmpScroll = $(this).scrollTop()
   })
 })
+
+window.addEventListener('resize', function (e) {
+  e.preventDefault()
+  resizeTextarea()
+})
+
+function resizeTextarea () {
+  const {BrowserWindow} = require('electron').remote
+  let currentWin = BrowserWindow.getFocusedWindow()
+  let size = currentWin.getSize()
+  vueApp.textHeight = size[1] - 200
+  // console.log(`size: ${vueApp.textHeight}`)
+}
