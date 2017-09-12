@@ -92,6 +92,7 @@ let vueApp = new Vue({
     clearScreen: function () {
       let textarea = document.getElementById('serialData')
       textarea.value = ''
+      scrollDown = true
     }
 
   }
