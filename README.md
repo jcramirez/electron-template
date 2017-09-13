@@ -1,7 +1,7 @@
 # electron-template
 ### An electron, Vue.js and Bootstrap starting point for all!
 
-**Clone and run for a quick way to see Electron Vue.js and Bootstrap in action.**
+**Clone and run for a quick way to see Electron, Vue.js and Bootstrap in action.**
 
 This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start) within the Electron documentation.
 
@@ -31,9 +31,9 @@ npm install
 npm start
 ```
 
-### Package native apps for Windows, Mac and Linux using [electron-packager](https://github.com/electron-userland/electron-packager)
+## Package native apps for Windows, Mac and Linux using [electron-packager](https://github.com/electron-userland/electron-packager)
 
-Ex. to build .exe:
+To build windows app:
 ```bash
 npm run package-win
 ```
