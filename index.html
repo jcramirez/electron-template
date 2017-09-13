@@ -3,56 +3,35 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SerialMonitor</title>
+
+    <title>Electron Template</title>
+
+    <!-- more Bootstrap themes at https://bootswatch.com -->
     <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+
+    <style>
+      /* prevents seeing those {{variable}} before Vue.js is ready to render */
+      [v-cloak] {
+        display: none;
+      }
+    </style>
 
   </head>
   <body>
-    <div id="app">
+    <div id="app" v-cloak>
       <div class="container">
-
-        <div class="row well well-lg">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <ul class="nav nav-pills">
-                <li class="dropdown" v-bind:class="{disabled: isOpen}">
-                  <a class="dropdown-toggle" v-bind:class="{disabled: isOpen}" data-toggle="dropdown" href="#" aria-expanded="false">
-                    {{selectedPort}} <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li v-for="port in ports">
-                      <a href="#" v-on:click="selectPort">{{ port.comName }}</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-          </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <div class="form-group">
-                <div class="input-group">
-                  <span class="input-group-addon">Baudrate</span>
-                  <input v-model="baudrate" class="form-control" type="text" placeholder=v-bind:id="baudrate" :disabled="isOpen">
-                </div>
-              </div>
-          </div>
-  
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <button v-on:click="openSelectedPort" class="btn btn-primary" type="button">{{portStatus.msg}}</button>
-            <button v-on:click="clearScreen" class="btn btn-info" type="button">Clear</button>
-          </div>
-  
+        <div class="row">
+          <h2>{{message}}</h2>
         </div>
-        <!-- row  -->
-
-      </div>
-  
-      <div class="container-fluid" >
-        <textarea readonly class="form-control" v-bind:style="{height: textHeight + 'px'}" id="serialData"></textarea>
+        <div class="row well well-sm">
+            <a href="#" v-on:click="button" class="btn btn-primary">{{buttonText}}</a>
+          </div>
       </div>
     </div>
 
     <!--
       Insert this line above script imports
-      this is done to make sure that jQuery is imported properly
+      this is done to make sure that jQuery and others are imported properly
     -->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 

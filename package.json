@@ -1,22 +1,28 @@
 {
-  "name": "electron-serialport",
-  "version": "1.0.1",
-  "description": "A minimal Electron application serial monitor",
+  "name": "electron-template",
+  "productName": "electron-template",
+  "version": "1.0.0",
+  "description": "An electron, Vue.js and Bootstrap starting point for all!",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "install": "electron-rebuild"
+    "install": "electron-rebuild",
+    "package-all": "electron-packager .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --prune=true",
+    "package-win": "electron-packager . --overwrite --platform=win32 --prune=true --asar=true",
+    "package-linux": "electron-packager . --overwrite --platform=linux --prune=true"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jcramirez/electron-serialport.git"
+    "url": "https://github.com/jcramirez/electron-template.git"
   },
   "keywords": [
     "Electron",
     "quick",
     "start",
     "tutorial",
-    "demo"
+    "demo",
+    "template"
   ],
   "author": "jcramirez",
   "license": "CC0-1.0",
@@ -26,6 +32,5 @@
     "standard": "*"
   },
   "dependencies": {
-    "serialport": "^4.0.7"
   }
 }
