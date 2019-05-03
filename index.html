@@ -15,6 +15,11 @@
         display: none;
       }
     </style>
+    
+    <script>
+      const pjson = require('./package.json')
+      document.title = `Electron Template v${pjson.version}`
+    </script>
 
   </head>
   <body>
